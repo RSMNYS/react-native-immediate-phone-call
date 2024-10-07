@@ -12,7 +12,10 @@ RCT_EXPORT_MODULE();
 RCT_EXPORT_METHOD(immediatePhoneCall:(NSString *)number)
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", number]]];
+      NSURL *actionUrl = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", number]];
+      if ([[UIApplication sharedApplication] canOpenURL:actionUrl]) {
+          [[UIApplication sharedApplication] openURL:actionUrl options:@{} completionHandler:nil];
+      }
     });
 };
 
